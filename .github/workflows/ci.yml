@@ -125,6 +125,31 @@ jobs:
           dart/hello.exe
           dart/info.txt
 
+  build_fsharp:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.100-preview.1.23115.2'
+    - name: Build
+      shell: cmd
+      run: |
+        cd fsharp
+        dotnet --info
+        dotnet publish -p:PublishAot=true
+        (
+        echo LANGUAGE=F-sharp
+        echo COMPILER=8.0.100-preview.1.23115.2
+        )>bin\Release\net8.0\win-x64\publish\info.txt
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: fsharp
+        path: |
+          fsharp/bin/Release/net8.0/win-x64/publish/hello.exe
+          fsharp/bin/Release/net8.0/win-x64/publish/info.txt
+
   build_go:
     runs-on: windows-latest
     steps:
@@ -273,7 +298,7 @@ jobs:
           zig/info.txt
 
   summarize:
-    needs: [build_asm, build_c, build_cpp, build_csharp, build_dart, build_go, build_java, build_rust, build_swift, build_zig]
+    needs: [build_asm, build_c, build_cpp, build_csharp, build_dart, build_fsharp, build_go, build_java, build_rust, build_swift, build_zig]
     runs-on: windows-latest
     steps:
       - name: Download all artifacts
