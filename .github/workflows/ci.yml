@@ -211,6 +211,31 @@ jobs:
           java/vcruntime140.dll
           java/info.txt
 
+  build_kotlin:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: fwilhe2/setup-kotlin@main
+        with:
+          install-native: true
+      - name: Build
+        shell: cmd
+        run: |
+          cd kotlin
+          call kotlinc-native hello.kt -o hello -opt
+          call kotlinc-native -version
+          (
+          echo LANGUAGE=Kotlin
+          echo COMPILER=kotlinc-native 1.18.10
+          )>info.txt
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: kotlin
+          path: |
+            kotlin/hello.exe
+            kotlin/info.txt
+
   build_rust:
     runs-on: windows-latest
     steps:
@@ -298,7 +323,7 @@ jobs:
           zig/info.txt
 
   summarize:
-    needs: [build_asm, build_c, build_cpp, build_csharp, build_dart, build_fsharp, build_go, build_java, build_rust, build_swift, build_zig]
+    needs: [build_asm, build_c, build_cpp, build_csharp, build_dart, build_fsharp, build_go, build_java, build_kotlin, build_rust, build_swift, build_zig]
     runs-on: windows-latest
     steps:
       - name: Download all artifacts
