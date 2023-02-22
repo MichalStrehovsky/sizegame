@@ -1,0 +1,336 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build_asm:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build
+      shell: cmd
+      run: |
+        cd asm
+        call "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        ml64 hello.asm /link /entry:main kernel32.lib
+        (
+        echo LANGUAGE=Assembly
+        echo COMPILER=Microsoft Macro Assembler Version 14.34.31937.0
+        )>info.txt
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: asm
+        path: |
+          asm/hello.exe
+          asm/info.txt
+
+  build_c:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build
+      shell: cmd
+      run: |
+        cd c
+        call "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        # By default the generated binary will depend on VCRuntime140.dll that is
+        # not part of a clean OS install. Pass /MT
+        cl /MT /Os hello.c
+        (
+        echo LANGUAGE=C
+        echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.34.31937 for x64
+        )>info.txt
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: c
+        path: |
+          c/hello.exe
+          c/info.txt
+
+  build_cpp:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build
+      shell: cmd
+      run: |
+        cd cpp
+        call "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        # By default the generated binary will depend on VCRuntime140.dll that is
+        # not part of a clean OS install. Pass /MT
+        # Generates a warning if /EHsc is not passed. So pass it.
+        cl /MT /Os /EHsc hello.cpp
+        (
+        echo LANGUAGE=C++
+        echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.34.31937 for x64
+        )>info.txt
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: cpp
+        path: |
+          cpp/hello.exe
+          cpp/info.txt
+
+  build_csharp:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.100-preview.1.23115.2'
+    - name: Build
+      shell: cmd
+      run: |
+        cd csharp
+        dotnet --info
+        dotnet publish -p:PublishAot=true
+        (
+        echo LANGUAGE=C-sharp
+        echo COMPILER=8.0.100-preview.1.23115.2
+        )>bin\Release\net8.0\win-x64\publish\info.txt
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: csharp
+        path: |
+          csharp/bin/Release/net8.0/win-x64/publish/hello.exe
+          csharp/bin/Release/net8.0/win-x64/publish/info.txt
+
+  build_dart:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: dart-lang/setup-dart@v1
+    - name: Build
+      shell: cmd
+      run: |
+        cd dart
+        dart compile exe hello.dart
+        dart --version
+        (
+        echo LANGUAGE=Dart
+        echo COMPILER=Dart SDK version: 2.19.2 ^(stable^) ^(Tue Feb 7 18:37:17 2023 +0000^) on "windows_x64"
+        )>info.txt
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: dart
+        path: |
+          dart/hello.exe
+          dart/info.txt
+
+  build_go:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-go@v3
+      with:
+        go-version: 'stable'
+    - name: Build
+      shell: cmd
+      run: |
+        cd go
+        go build hello.go
+        go version
+        (
+        echo LANGUAGE=Go
+        echo COMPILER=go version go1.17.13 windows/amd64
+        )>info.txt
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: go
+        path: |
+          go/hello.exe
+          go/info.txt
+
+  build_java:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: graalvm/setup-graalvm@v1
+      with:
+        version: 'latest'
+        java-version: '19'
+        components: 'native-image'
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Build
+      shell: cmd
+      run: |
+        cd java
+        javac Hello.java
+        # By default the generated binary will depend on VCRuntime140.dll that is
+        # not part of a clean OS install. Pass --static to show I tried,
+        # but it doesn't seem to work.
+        call native-image --static Hello
+        # for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
+        copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.34.31931\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
+        call native-image --version
+        (
+        echo LANGUAGE=Java
+        echo COMPILER=GraalVM 22.3.1 Java 17 CE ^(Java Version 17.0.6+10-jvmci-22.3-b13^)
+        echo NOTES=Includes vcruntime140.dll
+        )>info.txt
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: java
+        path: |
+          java/hello.exe
+          java/vcruntime140.dll
+          java/info.txt
+
+  build_rust:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build
+      shell: cmd
+      run: |
+        cd rust
+        # By default the generated binary will depend on VCRuntime140.dll that is
+        # not part of a clean OS install. Pass +crt-static.
+        rustc -O -C target-feature=+crt-static hello.rs
+        rustc --version
+        (
+        echo LANGUAGE=Rust
+        echo COMPILER=rustc 1.67.0 ^(fc594f156 2023-01-24^)
+        )>info.txt
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: rust
+        path: |
+          rust/hello.exe
+          rust/info.txt
+
+  build_swift:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Swift
+      shell: cmd
+      run: |
+        curl -L -O https://download.swift.org/swift-5.7.3-release/windows10/swift-5.7.3-RELEASE/swift-5.7.3-RELEASE-windows10.exe
+        start /wait swift-5.7.3-RELEASE-windows10.exe /quiet
+    - name: Build
+      shell: cmd
+      run: |
+        call refreshenv
+        cd swift
+        # Attempt to do a static executable. As of Swift 5.7.3, this doesn't seem to actually work.
+        swiftc -O -static-executable hello.swift
+        # for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
+        copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.34.31931\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
+        copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.34.31931\x64\Microsoft.VC143.CRT\vcruntime140_1.dll" .
+        copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.34.31931\x64\Microsoft.VC143.CRT\msvcp140.dll" .
+        copy "%PROGRAMFILES%\swift\runtime-development\usr\bin\swiftCore.dll" .
+        swiftc -version
+        (
+        echo LANGUAGE=Swift
+        echo COMPILER=compnerd.org Swift version 5.7.3 ^(swift-5.7.3-RELEASE^)
+        echo NOTES=Includes: swiftCore.dll, vcruntime140.dll, vcruntime140_1.dll, msvcp140.dll
+        )>info.txt
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: swift
+        path: |
+          swift/hello.exe
+          swift/vcruntime140.dll
+          swift/vcruntime140_1.dll
+          swift/msvcp140.dll
+          swift/swiftCore.dll
+          swift/info.txt
+
+  build_zig:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: goto-bus-stop/setup-zig@v2
+    - name: Build
+      shell: cmd
+      run: |
+        cd zig
+        zig build-exe hello.zig -O ReleaseSmall
+        zig version
+        (
+        echo LANGUAGE=Zig
+        echo COMPILER=0.11.0-dev.1593+d24ebf1d1
+        )>info.txt
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: zig
+        path: |
+          zig/hello.exe
+          zig/info.txt
+
+  summarize:
+    needs: [build_asm, build_c, build_cpp, build_csharp, build_dart, build_go, build_java, build_rust, build_swift, build_zig]
+    runs-on: windows-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+      - name: Summarize
+        shell: cmd
+        run: |
+          (
+          echo Language ^| Size ^(kB^) ^| Compiler ^| Notes
+          echo -------- ^| ---- ^| -------- ^| -----
+          )>report.md
+
+          FOR /D %%d IN (*) DO (
+            call :Handle %%d
+          )
+
+          echo *** PLOT DATA ***
+          type plotdata.txt
+          echo *** REPORT ***
+          type report.md
+
+          (
+          echo set term png size 1200, 675
+          echo set output "report.png"
+          echo set boxwidth 0.5
+          echo set style fill solid
+          echo set title "Size of canonical Hello World"
+          echo set key off
+          echo set ylabel "Size ^(kB^)"
+          echo plot "plotdata.txt" using 2:xtic^(1^) with boxes
+          )>plotcommands.txt
+
+          echo *** COMMANDS ***
+          type plotcommands.txt
+
+          choco install gnuplot
+          call refreshenv
+          gnuplot plotcommands.txt
+
+          goto :EOF
+
+          :Handle
+          set size=0
+          for %%f IN (%1\*.exe %1\*.dll) DO (
+            set /A size=size + %%~zf
+          )
+          set /A size=size / 1024
+
+          set NOTES=
+          for /f "delims== tokens=1,2" %%G in (%1\info.txt) do set %%G=%%H
+
+          echo %LANGUAGE%	%size% >> plotdata.txt
+          echo %LANGUAGE% ^| %size% ^| %COMPILER% ^| %NOTES% >> report.md
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: report
+          path: |
+            report.png
+            report.md
