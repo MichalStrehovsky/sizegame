@@ -285,8 +285,8 @@ jobs:
         shell: cmd
         run: |
           cd kotlin
-          kotlinc-native hello.kt -o hello -opt
-          kotlinc-native -version
+          call kotlinc-native hello.kt -o hello -opt
+          call kotlinc-native -version
           (
           echo LANGUAGE=Kotlin
           echo COMPILER=kotlinc-native 1.18.10
