@@ -260,6 +260,31 @@ jobs:
           rust/hello.exe
           rust/info.txt
 
+  build_scala:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: olafurpg/setup-scala@v14
+        with:
+         java-version: adopt@
+      - name: Build
+        shell: cmd
+        run: |
+          cd scala
+          sbt run
+          sbt --version
+          (
+          echo LANGUAGE=Scala
+          echo COMPILER=Scala 3.2.2 Scala-native 0.4.10
+          )>info.txt
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: scala
+          path: |
+            scala/target/scala-3.2.2/scala-out.exe
+            scala/info.txt
+
   build_swift:
     runs-on: windows-latest
     steps:
