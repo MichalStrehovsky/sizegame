@@ -10,7 +10,7 @@ import scala.scalanative.build._
 
 // defaults set with common options shown
 nativeConfig ~= { c =>
-  c.withLTO(LTO.full) // thin
+  c.withLTO(LTO.none) // thin
     .withMode(Mode.releaseSize) // releaseFast
-    .withGC(GC.immix) // commix
+    .withGC(GC.default) // commix
 }

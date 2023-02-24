@@ -276,7 +276,7 @@ jobs:
           (
           echo LANGUAGE=Scala
           echo COMPILER=Scala 3.2.2 Scala-native 0.4.10
-          )>info.txt
+          )>target/scala-3.2.2/info.txt
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
