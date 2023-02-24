@@ -283,7 +283,7 @@ jobs:
           name: scala
           path: |
             scala/target/scala-3.2.2/scala-out.exe
-            scala/info.txt
+            scala/target/scala-3.2.2/info.txt
 
   build_swift:
     runs-on: windows-latest
