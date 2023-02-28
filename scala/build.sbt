@@ -10,5 +10,5 @@ import scala.scalanative.build._
 
 // defaults set with common options shown
 nativeConfig ~= { c =>
-    .withMode(Mode.releaseSize) // releaseFast
+    c.withMode(Mode.releaseSize) // releaseFast
 }
