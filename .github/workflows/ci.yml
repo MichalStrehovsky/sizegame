@@ -247,7 +247,7 @@ jobs:
         shell: cmd
         run: |
           cd nim
-          nim c --opt:size -d:release hello.nim
+          nim c -d:release hello.nim
           nim --version
           (
           echo LANGUAGE=Nim
