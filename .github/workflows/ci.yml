@@ -271,12 +271,12 @@ jobs:
         shell: cmd
         run: |
           cd scala
-          sbt run
-          sbt --version
+          call sbt run
+          call sbt --version
           (
           echo LANGUAGE=Scala
           echo COMPILER=Scala 3.2.2 Scala-native 0.4.10
-          )>target/scala-3.2.2/info.txt
+          )>target\scala-3.2.2\info.txt
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
