@@ -235,7 +235,30 @@ jobs:
           path: |
             kotlin/hello.exe
             kotlin/info.txt
-
+            
+  build_nim:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: jiro4989/setup-nim-action@v1
+      - name: Build
+        shell: cmd
+        run: |
+          cd nim
+          nim c -d:release hello.nim
+          nim --version
+          (
+          echo LANGUAGE=Nim
+          echo COMPILER=nim 1.6.10
+          )>info.txt
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: nim
+          path: |
+            nim/hello.exe
+            nim/info.txt
+            
   build_rust:
     runs-on: windows-latest
     steps:
@@ -348,7 +371,7 @@ jobs:
           zig/info.txt
 
   summarize:
-    needs: [build_asm, build_c, build_cpp, build_csharp, build_dart, build_fsharp, build_go, build_java, build_kotlin, build_rust, build_scala, build_swift, build_zig]
+    needs: [build_asm, build_c, build_cpp, build_csharp, build_dart, build_fsharp, build_go, build_java, build_kotlin, build_nim, build_rust, build_scala, build_swift, build_zig]
     runs-on: windows-latest
     steps:
       - name: Download all artifacts
