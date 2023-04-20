@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_asm:
+  windows_build_asm:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
@@ -18,6 +18,7 @@ jobs:
         ml64 hello.asm /link /entry:main kernel32.lib
         (
         echo LANGUAGE=Assembly
+        echo OS=Windows
         echo COMPILER=Microsoft Macro Assembler Version 14.34.31937.0
         )>info.txt
     - name: Upload
@@ -28,7 +29,7 @@ jobs:
           asm/hello.exe
           asm/info.txt
 
-  build_c:
+  windows_build_c:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
@@ -42,6 +43,7 @@ jobs:
         cl /MT /Os hello.c
         (
         echo LANGUAGE=C
+        echo OS=Windows
         echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.34.31937 for x64
         )>info.txt
     - name: Upload
@@ -52,7 +54,7 @@ jobs:
           c/hello.exe
           c/info.txt
 
-  build_cpp:
+  windows_build_cpp:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
@@ -67,6 +69,7 @@ jobs:
         cl /MT /Os /EHsc hello.cpp
         (
         echo LANGUAGE=C++
+        echo OS=Windows
         echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.34.31937 for x64
         )>info.txt
     - name: Upload
@@ -77,7 +80,7 @@ jobs:
           cpp/hello.exe
           cpp/info.txt
 
-  build_csharp:
+  windows_build_csharp:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
@@ -92,6 +95,7 @@ jobs:
         dotnet publish -p:PublishAot=true
         (
         echo LANGUAGE=C-sharp
+        echo OS=Windows
         echo COMPILER=8.0.100-preview.1.23115.2
         )>bin\Release\net8.0\win-x64\publish\info.txt
     - name: Upload
@@ -102,7 +106,7 @@ jobs:
           csharp/bin/Release/net8.0/win-x64/publish/hello.exe
           csharp/bin/Release/net8.0/win-x64/publish/info.txt
 
-  build_dart:
+  windows_build_dart:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
@@ -115,6 +119,7 @@ jobs:
         dart --version
         (
         echo LANGUAGE=Dart
+        echo OS=Windows
         echo COMPILER=Dart SDK version: 2.19.2 ^(stable^) ^(Tue Feb 7 18:37:17 2023 +0000^) on "windows_x64"
         )>info.txt
     - name: Upload
@@ -125,7 +130,7 @@ jobs:
           dart/hello.exe
           dart/info.txt
 
-  build_fsharp:
+  windows_build_fsharp:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
@@ -140,6 +145,7 @@ jobs:
         dotnet publish -p:PublishAot=true
         (
         echo LANGUAGE=F-sharp
+        echo OS=Windows
         echo COMPILER=8.0.100-preview.1.23115.2
         )>bin\Release\net8.0\win-x64\publish\info.txt
     - name: Upload
@@ -150,7 +156,7 @@ jobs:
           fsharp/bin/Release/net8.0/win-x64/publish/hello.exe
           fsharp/bin/Release/net8.0/win-x64/publish/info.txt
 
-  build_go:
+  windows_build_go:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
@@ -165,6 +171,7 @@ jobs:
         go version
         (
         echo LANGUAGE=Go
+        echo OS=Windows
         echo COMPILER=go version go1.17.13 windows/amd64
         )>info.txt
     - name: Upload
@@ -175,7 +182,7 @@ jobs:
           go/hello.exe
           go/info.txt
 
-  build_java:
+  windows_build_java:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
@@ -199,6 +206,7 @@ jobs:
         call native-image --version
         (
         echo LANGUAGE=Java
+        echo OS=Windows
         echo COMPILER=GraalVM 22.3.1 Java 17 CE ^(Java Version 17.0.6+10-jvmci-22.3-b13^)
         echo NOTES=Includes vcruntime140.dll
         )>info.txt
@@ -211,7 +219,7 @@ jobs:
           java/vcruntime140.dll
           java/info.txt
 
-  build_kotlin:
+  windows_build_kotlin:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
@@ -226,6 +234,7 @@ jobs:
           call kotlinc-native -version
           (
           echo LANGUAGE=Kotlin
+          echo OS=Windows
           echo COMPILER=kotlinc-native 1.18.10
           )>info.txt
       - name: Upload
@@ -236,7 +245,7 @@ jobs:
             kotlin/hello.exe
             kotlin/info.txt
             
-  build_nim:
+  windows_build_nim:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
@@ -249,6 +258,7 @@ jobs:
           nim --version
           (
           echo LANGUAGE=Nim
+          echo OS=Windows
           echo COMPILER=nim 1.6.10
           )>info.txt
       - name: Upload
@@ -259,7 +269,7 @@ jobs:
             nim/hello.exe
             nim/info.txt
             
-  build_rust:
+  windows_build_rust:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
@@ -273,6 +283,7 @@ jobs:
         rustc --version
         (
         echo LANGUAGE=Rust
+        echo OS=Windows
         echo COMPILER=rustc 1.67.0 ^(fc594f156 2023-01-24^)
         )>info.txt
     - name: Upload
@@ -283,7 +294,7 @@ jobs:
           rust/hello.exe
           rust/info.txt
 
-  build_scala:
+  windows_build_scala:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
@@ -308,7 +319,7 @@ jobs:
             scala/target/scala-3.2.2/scala-out.exe
             scala/target/scala-3.2.2/info.txt
 
-  build_swift:
+  windows_build_swift:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
@@ -332,6 +343,7 @@ jobs:
         swiftc -version
         (
         echo LANGUAGE=Swift
+        echo OS=Windows
         echo COMPILER=compnerd.org Swift version 5.7.3 ^(swift-5.7.3-RELEASE^)
         echo NOTES=Includes: swiftCore.dll, vcruntime140.dll, vcruntime140_1.dll, msvcp140.dll
         )>info.txt
@@ -347,7 +359,7 @@ jobs:
           swift/swiftCore.dll
           swift/info.txt
 
-  build_zig:
+  windows_build_zig:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
@@ -360,6 +372,7 @@ jobs:
         zig version
         (
         echo LANGUAGE=Zig
+        echo OS=Windows
         echo COMPILER=0.11.0-dev.1593+d24ebf1d1
         )>info.txt
     - name: Upload
@@ -371,7 +384,21 @@ jobs:
           zig/info.txt
 
   summarize:
-    needs: [build_asm, build_c, build_cpp, build_csharp, build_dart, build_fsharp, build_go, build_java, build_kotlin, build_nim, build_rust, build_scala, build_swift, build_zig]
+    needs: 
+    - windows_build_asm
+    - windows_build_c
+    - windows_build_cpp
+    - windows_build_csharp
+    - windows_build_dart
+    - windows_build_fsharp
+    - windows_build_go
+    - windows_build_java
+    - windows_build_kotlin
+    - windows_build_nim
+    - windows_build_rust
+    - windows_build_scala
+    - windows_build_swift
+    - windows_build_zig
     runs-on: windows-latest
     steps:
       - name: Download all artifacts
@@ -380,8 +407,8 @@ jobs:
         shell: cmd
         run: |
           (
-          echo Language ^| Size ^(kB^) ^| Compiler ^| Notes
-          echo -------- ^| ---- ^| -------- ^| -----
+          echo Language ^| OS ^| Size ^(kB^) ^| Compiler ^| Notes
+          echo -------- ^| -- ^| ---- ^| -------- ^| -----
           )>report.md
 
           FOR /D %%d IN (*) DO (
@@ -423,8 +450,8 @@ jobs:
           set NOTES=
           for /f "delims== tokens=1,2" %%G in (%1\info.txt) do set %%G=%%H
 
-          echo %LANGUAGE%	%size% >> plotdata.txt
-          echo %LANGUAGE% ^| %size% ^| %COMPILER% ^| %NOTES% >> report.md
+          echo %LANGUAGE%_%OS%	%size% >> plotdata.txt
+          echo %LANGUAGE% ^| %OS% ^| %size% ^| %COMPILER% ^| %NOTES% >> report.md
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
