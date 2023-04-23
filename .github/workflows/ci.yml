@@ -175,6 +175,30 @@ jobs:
           go/hello.exe
           go/info.txt
 
+  build_haskell:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: haskell/actions/setup@v2
+      - name: Build
+        shell: pwsh
+        run: |
+          cd haskell
+          ghc --version
+          ghc hello.hs
+          $info = @(
+            "LANGUAGE=Haskell"
+            "COMPILER=$(ghc --version)"
+          )
+          $info | Out-File -FilePath info.txt -Encoding ascii
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: haskell
+          path: |
+            haskell/hello.exe
+            haskell/info.txt
+
   build_java:
     runs-on: windows-latest
     steps:
@@ -258,6 +282,34 @@ jobs:
           path: |
             nim/hello.exe
             nim/info.txt
+
+  build_node:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Build
+        shell: pwsh
+        run: |
+          cd nodejs
+          node --experimental-sea-config sea-config.json
+          cp (Get-Command node).Source hello.exe
+          npx -y postject hello.exe NODE_SEA_BLOB hello.blob --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2
+          node --version
+          $info = @(
+            "LANGUAGE=Node"
+            "COMPILER=Node 20.0.0"
+          )
+          $info | Out-File -FilePath info.txt -Encoding ascii
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: nodejs
+          path: |
+            nodejs/hello.exe
+            nodejs/info.txt
             
   build_rust:
     runs-on: windows-latest
@@ -371,7 +423,7 @@ jobs:
           zig/info.txt
 
   summarize:
-    needs: [build_asm, build_c, build_cpp, build_csharp, build_dart, build_fsharp, build_go, build_java, build_kotlin, build_nim, build_rust, build_scala, build_swift, build_zig]
+    needs: [build_asm, build_c, build_cpp, build_csharp, build_dart, build_fsharp, build_go, build_haskell, build_java, build_kotlin, build_nim, build_node, build_rust, build_scala, build_swift, build_zig]
     runs-on: windows-latest
     steps:
       - name: Download all artifacts
