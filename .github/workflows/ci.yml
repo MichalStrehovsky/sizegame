@@ -131,7 +131,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0.100-preview.4.23260.5'
+        dotnet-version: '8.0.100-preview.1.23115.2'
     - name: Build
       shell: cmd
       run: |
@@ -140,7 +140,7 @@ jobs:
         dotnet publish -p:PublishAot=true
         (
         echo LANGUAGE=F#
-        echo COMPILER=8.0.100-preview.4.23260.5
+        echo COMPILER=8.0.100-preview.1.23115.2
         )>bin\Release\net8.0\win-x64\publish\info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
