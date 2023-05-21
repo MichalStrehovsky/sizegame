@@ -18,7 +18,7 @@ jobs:
         ml64 hello.asm /link /entry:main kernel32.lib
         (
         echo LANGUAGE=Assembly
-        echo COMPILER=Microsoft Macro Assembler Version 14.34.31937.0
+        echo COMPILER=Microsoft Macro Assembler Version 14.36.32532.0
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -42,7 +42,7 @@ jobs:
         cl /MT /Os hello.c
         (
         echo LANGUAGE=C
-        echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.34.31937 for x64
+        echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.36.32532 for x64
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -67,7 +67,7 @@ jobs:
         cl /MT /Os /EHsc hello.cpp
         (
         echo LANGUAGE=C++
-        echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.34.31937 for x64
+        echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.36.32532 for x64
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -115,7 +115,7 @@ jobs:
         dart --version
         (
         echo LANGUAGE=Dart
-        echo COMPILER=Dart SDK version: 2.19.2 ^(stable^) ^(Tue Feb 7 18:37:17 2023 +0000^) on "windows_x64"
+        echo COMPILER=Dart SDK version: 3.0.1 ^(stable^) ^(Tue May 16 11:57:19 2023 +0000^) on "windows_x64"
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -165,7 +165,7 @@ jobs:
         go version
         (
         echo LANGUAGE=Go
-        echo COMPILER=go version go1.17.13 windows/amd64
+        echo COMPILER=go version go1.20.4 windows/amd64
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -223,7 +223,7 @@ jobs:
         call native-image --version
         (
         echo LANGUAGE=Java
-        echo COMPILER=GraalVM 22.3.1 Java 17 CE ^(Java Version 17.0.6+10-jvmci-22.3-b13^)
+        echo COMPILER=GraalVM 22.3.2 Java 17 CE ^(Java Version 17.0.7+7-jvmci-22.3-b18^)
         echo NOTES=Includes vcruntime140.dll
         )>info.txt
     - name: Upload
@@ -273,7 +273,7 @@ jobs:
           nim --version
           (
           echo LANGUAGE=Nim
-          echo COMPILER=nim 1.6.10
+          echo COMPILER=Nim Compiler Version 1.6.12 [Windows: amd64]
           )>info.txt
       - name: Upload
         uses: actions/upload-artifact@v3
@@ -297,7 +297,7 @@ jobs:
         rustc --version
         (
         echo LANGUAGE=Rust
-        echo COMPILER=rustc 1.67.0 ^(fc594f156 2023-01-24^)
+        echo COMPILER=rustc 1.69.0 ^(84c898d65 2023-04-16^)
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -339,8 +339,8 @@ jobs:
     - name: Install Swift
       shell: cmd
       run: |
-        curl -L -O https://download.swift.org/swift-5.7.3-release/windows10/swift-5.7.3-RELEASE/swift-5.7.3-RELEASE-windows10.exe
-        start /wait swift-5.7.3-RELEASE-windows10.exe /quiet
+        curl -L -O https://download.swift.org/swift-5.8-release/windows10/swift-5.8-RELEASE/swift-5.8-RELEASE-windows10.exe
+        start /wait swift-5.8-RELEASE-windows10.exe /quiet
     - name: Build
       shell: cmd
       run: |
@@ -356,7 +356,7 @@ jobs:
         swiftc -version
         (
         echo LANGUAGE=Swift
-        echo COMPILER=compnerd.org Swift version 5.7.3 ^(swift-5.7.3-RELEASE^)
+        echo COMPILER=compnerd.org Swift version 5.8 ^(swift-5.8-RELEASE^)
         echo NOTES=Includes: swiftCore.dll, vcruntime140.dll, vcruntime140_1.dll, msvcp140.dll
         )>info.txt
     - name: Upload
@@ -384,7 +384,7 @@ jobs:
         zig version
         (
         echo LANGUAGE=Zig
-        echo COMPILER=0.11.0-dev.1593+d24ebf1d1
+        echo COMPILER=0.11.0-dev.3222+7077e90b3
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
