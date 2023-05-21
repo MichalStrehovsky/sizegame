@@ -5,6 +5,11 @@ on:
     branches: [ master ]
   workflow_dispatch:
 
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  dotnet_sdk: 8.0.100-preview.4.23260.5
+
 jobs:
   build_asm:
     runs-on: windows-latest
@@ -83,7 +88,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0.100-preview.4.23260.5'
+        dotnet-version: ${{ env.dotnet_sdk }}
     - name: Build
       shell: cmd
       run: |
@@ -92,7 +97,7 @@ jobs:
         dotnet publish
         (
         echo LANGUAGE=C#
-        echo COMPILER=8.0.100-preview.4.23260.5
+        echo COMPILER=${{ env.dotnet_sdk }}
         )>bin\Release\net8.0\win-x64\publish\info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -131,16 +136,16 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0.100-preview.1.23115.2'
+        dotnet-version: ${{ env.dotnet_sdk }}
     - name: Build
       shell: cmd
       run: |
         cd fsharp
         dotnet --info
-        dotnet publish -p:PublishAot=true
+        dotnet publish
         (
         echo LANGUAGE=F#
-        echo COMPILER=8.0.100-preview.1.23115.2
+        echo COMPILER=${{ env.dotnet_sdk }}
         )>bin\Release\net8.0\win-x64\publish\info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
