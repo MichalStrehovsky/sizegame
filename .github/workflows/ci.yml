@@ -83,15 +83,15 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0.100-preview.1.23115.2'
+        dotnet-version: '8.0.100-preview.4.23260.5'
     - name: Build
       shell: cmd
       run: |
         cd csharp
         dotnet --info
-        dotnet publish -p:PublishAot=true
+        dotnet publish
         (
-        echo LANGUAGE=C-sharp
+        echo LANGUAGE=C#
         echo COMPILER=8.0.100-preview.1.23115.2
         )>bin\Release\net8.0\win-x64\publish\info.txt
     - name: Upload
@@ -139,7 +139,7 @@ jobs:
         dotnet --info
         dotnet publish -p:PublishAot=true
         (
-        echo LANGUAGE=F-sharp
+        echo LANGUAGE=F#
         echo COMPILER=8.0.100-preview.1.23115.2
         )>bin\Release\net8.0\win-x64\publish\info.txt
     - name: Upload
