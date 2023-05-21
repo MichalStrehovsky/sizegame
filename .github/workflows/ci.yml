@@ -332,7 +332,7 @@ jobs:
         swiftc -version
         (
         echo LANGUAGE=Swift
-        echo COMPILER=compnerd.org Swift version 5.7.3 ^(swift-5.7.3-RELEASE^)
+        echo COMPILER=compnerd.org Swift version 5.8 ^(swift-5.8-RELEASE^)
         echo NOTES=Includes: swiftCore.dll, vcruntime140.dll, vcruntime140_1.dll, msvcp140.dll
         )>info.txt
     - name: Upload
