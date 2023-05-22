@@ -1,1 +1,1 @@
-printfn "Hello from F#"
+printfn "Hello, World!"
