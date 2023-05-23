@@ -102,6 +102,31 @@ jobs:
           csharp/bin/Release/net8.0/win-x64/publish/hello.exe
           csharp/bin/Release/net8.0/win-x64/publish/info.txt
 
+  build_d:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: dlang-community/setup-dlang@v1
+      with:
+        compiler: dmd-2.103.1
+    - name: Build
+      shell: cmd
+      run: |
+        cd d
+        dmd -release hello.d
+        dmd --version
+        (
+        echo LANGUAGE=D
+        echo COMPILER=DMD version 2.103.1 on "windows_x64"
+        )>info.txt
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: d
+        path: |
+          d/hello.exe
+          d/info.txt
+
   build_dart:
     runs-on: windows-latest
     steps:
@@ -395,7 +420,7 @@ jobs:
           zig/info.txt
 
   summarize:
-    needs: [build_asm, build_c, build_cpp, build_csharp, build_dart, build_fsharp, build_go, build_haskell, build_java, build_kotlin, build_nim, build_rust, build_scala, build_swift, build_zig]
+    needs: [build_asm, build_c, build_cpp, build_csharp, build_d, build_dart, build_fsharp, build_go, build_haskell, build_java, build_kotlin, build_nim, build_rust, build_scala, build_swift, build_zig]
     runs-on: windows-latest
     steps:
       - name: Download all artifacts
