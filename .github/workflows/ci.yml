@@ -265,24 +265,36 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: fwilhe2/setup-kotlin@main
+      - uses: graalvm/setup-graalvm@v1
         with:
-          install-native: true
+          version: 'latest'
+          java-version: '17'
+          components: 'native-image'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build
         shell: cmd
         run: |
           cd kotlin
-          call kotlinc-native hello.kt -o hello -opt
-          call kotlinc-native -version
+          call kotlinc hello.kt -include-runtime -d hello.jar
+          call kotlinc -version
           (
           echo LANGUAGE=Kotlin
-          echo COMPILER=kotlinc-native 1.18.10
+          echo COMPILER=kotlinc 1.18.10
+          echo NOTES=Includes vcrtuntime140.dll, AOT compiled with GraalVM, same version as the Java benchmark
           )>info.txt
+          # By default the generated binary will depend on VCRuntime140.dll that is
+          # not part of a clean OS install. Pass --static to show I tried,
+          # but it doesn't seem to work.
+          call native-image --static -jar hello.jar --no-fallback
+          # for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
+          copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.34.31931\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
           name: kotlin
           path: |
             kotlin/hello.exe
+            kotlin/vcruntime140.dll
             kotlin/info.txt
             
   build_nim:
