@@ -15,7 +15,7 @@ jobs:
       run: |
         cd asm
         call "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-        ml64 hello.asm /link /entry:main kernel3e2.lib
+        ml64 hello.asm /link /entry:main kernel32.lib
         (
         echo LANGUAGE=Assembly
         echo COMPILER=Microsoft Macro Assembler Version 14.36.32532.0
