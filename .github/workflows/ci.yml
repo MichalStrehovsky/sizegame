@@ -15,7 +15,7 @@ jobs:
       run: |
         cd asm
         call "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-        ml64 hello.asm /link /entry:main kernel32.lib
+        ml64 hello.asm /link /entry:main kernel3e2.lib
         (
         echo LANGUAGE=Assembly
         echo COMPILER=Microsoft Macro Assembler Version 14.36.32532.0
@@ -89,7 +89,7 @@ jobs:
       run: |
         cd csharp
         dotnet --info
-        dotnet publish
+        dotnet publish /p:OptimizationPreference=Size
         (
         echo LANGUAGE=C#
         echo COMPILER=8.0.100-preview.4.23260.5
@@ -113,7 +113,7 @@ jobs:
       shell: cmd
       run: |
         cd d
-        dmd -release hello.d
+        dmd -release -O hello.d
         dmd --version
         (
         echo LANGUAGE=D
@@ -210,7 +210,7 @@ jobs:
         run: |
           cd haskell
           ghc --version
-          ghc hello.hs
+          ghc -O hello.hs
           $info = @(
             "LANGUAGE=Haskell"
             "COMPILER=$(ghc --version)"
@@ -306,7 +306,7 @@ jobs:
         shell: cmd
         run: |
           cd nim
-          nim c -d:release hello.nim
+          nim c -d:release --opt:size hello.nim
           nim --version
           (
           echo LANGUAGE=Nim
@@ -330,7 +330,7 @@ jobs:
         cd rust
         # By default the generated binary will depend on VCRuntime140.dll that is
         # not part of a clean OS install. Pass +crt-static.
-        rustc -O -C target-feature=+crt-static hello.rs
+        rustc -C opt-level=2 -C target-feature=+crt-static hello.rs
         rustc --version
         (
         echo LANGUAGE=Rust
@@ -384,7 +384,7 @@ jobs:
         call refreshenv
         cd swift
         # Attempt to do a static executable. As of Swift 5.7.3, this doesn't seem to actually work.
-        swiftc -O -static-executable hello.swift
+        swiftc -Osize -static-executable hello.swift
         # for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
         copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.34.31931\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
         copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.34.31931\x64\Microsoft.VC143.CRT\vcruntime140_1.dll" .
