@@ -91,7 +91,7 @@ jobs:
         crystal build hello.cr --release
         (
         echo LANGUAGE=Crystal
-        echo COMPILER=TBD
+        echo COMPILER=Crystal 1.9.1 [c355a34] ^(2023-07-17^)
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
