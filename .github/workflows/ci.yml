@@ -76,6 +76,30 @@ jobs:
         path: |
           cpp/hello.exe
           cpp/info.txt
+          
+  build_crystal:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Crystal
+      uses: crystal-lang/install-crystal@v1
+    - name: Build
+      shell: cmd
+      run: |
+        cd crystal
+        crystal -v
+        crystal build hello.cr --release
+        (
+        echo LANGUAGE=Crystal
+        echo COMPILER=TBD
+        )>info.txt
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: crystal
+        path: |
+          crystal/hello.exe
+          crystal/info.txt
 
   build_csharp:
     runs-on: windows-latest
@@ -432,7 +456,7 @@ jobs:
           zig/info.txt
 
   summarize:
-    needs: [build_asm, build_c, build_cpp, build_csharp, build_d, build_dart, build_fsharp, build_go, build_haskell, build_java, build_kotlin, build_nim, build_rust, build_scala, build_swift, build_zig]
+    needs: [build_asm, build_c, build_cpp, build_crystal, build_csharp, build_d, build_dart, build_fsharp, build_go, build_haskell, build_java, build_kotlin, build_nim, build_rust, build_scala, build_swift, build_zig]
     runs-on: windows-latest
     steps:
       - name: Download all artifacts
