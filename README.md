@@ -33,7 +33,7 @@ Rank | Language | Size (kB) | Compiler | Notes
 1. The program should be compiled ahead of time. Languages that are jitted/interpreted by default should be compiled ahead of time the canonical way.
 2. The program should print Hello World the idiomatic way, using the standard library that comes with the language. Ideally, use the same snippet found in the official introductionary tutorial for the language.
 3. The program should be compiled using the default compiler settings.
-   * You can enable optimizations if optimizations are not enabled by default. If the compiler has a master switch "enable optimizations", that switch should be used. If there are only more specialized switches (like in Zig), we have no option but to optimize for size, although the results are less representative of what is canonical.
+   * You can enable optimizations if optimizations are not enabled by default. If the compiler has a master switch "enable optimizations", that switch should be used. You can set the optimization preference to size optimizations, provided they don't change semantics.
 4. The program should run on a vanilla OS install. Ideally, it should link non-OS dependencies statically. If that's not possible, the reported size _will include the size of all dynamic libraries not provided by a vanilla OS install_.
 
 The motivation for these rules is simple - canonical hello world and canonical compiler settings measure the canonical user experience. All of the measured languages have ways to produce smaller Hello World. E.g. disabling textual backtraces in Go, not using the standard library in C, messing with linker switches for any of these, etc.
