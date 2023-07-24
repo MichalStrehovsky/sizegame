@@ -15,10 +15,11 @@ jobs:
       run: |
         cd asm
         call "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        ml64
         ml64 hello.asm /link /entry:main kernel32.lib
         (
         echo LANGUAGE=Assembly
-        echo COMPILER=Microsoft Macro Assembler Version 14.36.32532.0
+        echo COMPILER=Microsoft Macro Assembler Version 14.35.32217.1
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -39,10 +40,11 @@ jobs:
         call "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
         # By default the generated binary will depend on VCRuntime140.dll that is
         # not part of a clean OS install. Pass /MT
+        cl
         cl /MT /Os hello.c
         (
         echo LANGUAGE=C
-        echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.36.32532 for x64
+        echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.35.32217.1 for x64
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -64,10 +66,11 @@ jobs:
         # By default the generated binary will depend on VCRuntime140.dll that is
         # not part of a clean OS install. Pass /MT
         # Generates a warning if /EHsc is not passed. So pass it.
+        cl
         cl /MT /Os /EHsc hello.cpp
         (
         echo LANGUAGE=C++
-        echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.36.32532 for x64
+        echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.35.32217.1 for x64
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -91,7 +94,7 @@ jobs:
         crystal build hello.cr --release
         (
         echo LANGUAGE=Crystal
-        echo COMPILER=Crystal 1.9.1 [c355a34] ^(2023-07-17^)
+        echo COMPILER=Crystal 1.9.2 [1908c81] ^(2023-07-19^)
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -107,7 +110,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0.100-preview.4.23260.5'
+        dotnet-version: '8.0.100-preview.6.23330.14'
     - name: Build
       shell: cmd
       run: |
@@ -116,7 +119,7 @@ jobs:
         dotnet publish /p:OptimizationPreference=Size
         (
         echo LANGUAGE=C#
-        echo COMPILER=8.0.100-preview.4.23260.5
+        echo COMPILER=8.0.100-preview.6.23330.14
         )>bin\Release\net8.0\win-x64\publish\info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -141,7 +144,7 @@ jobs:
         dmd --version
         (
         echo LANGUAGE=D
-        echo COMPILER=DMD version 2.103.1 on "windows_x64"
+        echo COMPILER=DMD64 D Compiler v2.104.2-dirty
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -164,7 +167,7 @@ jobs:
         dart --version
         (
         echo LANGUAGE=Dart
-        echo COMPILER=Dart SDK version: 3.0.1 ^(stable^) ^(Tue May 16 11:57:19 2023 +0000^) on "windows_x64"
+        echo COMPILER=Dart SDK version: 3.0.6 ^(stable^) ^(Tue Jul 11 18:49:07 2023 +0000^) on "windows_x64"
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -180,16 +183,16 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0.100-preview.1.23115.2'
+        dotnet-version: '8.0.100-preview.6.23330.14'
     - name: Build
       shell: cmd
       run: |
         cd fsharp
         dotnet --info
-        dotnet publish -p:PublishAot=true
+        dotnet publish -p:PublishAot=true -p:OptimizationPreference=Size
         (
         echo LANGUAGE=F#
-        echo COMPILER=8.0.100-preview.1.23115.2
+        echo COMPILER=8.0.100-preview.6.23330.14
         )>bin\Release\net8.0\win-x64\publish\info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -214,7 +217,7 @@ jobs:
         go version
         (
         echo LANGUAGE=Go
-        echo COMPILER=go version go1.20.4 windows/amd64
+        echo COMPILER=go version go1.20.6 windows/amd64
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -272,7 +275,7 @@ jobs:
         call native-image --version
         (
         echo LANGUAGE=Java
-        echo COMPILER=GraalVM 22.3.2 Java 17 CE ^(Java Version 17.0.7+7-jvmci-22.3-b18^)
+        echo COMPILER=native-image 17.0.8 2023-07-18
         echo NOTES=Includes vcruntime140.dll
         )>info.txt
     - name: Upload
@@ -303,7 +306,7 @@ jobs:
           call kotlinc -version
           (
           echo LANGUAGE=Kotlin
-          echo COMPILER=kotlinc 1.18.10
+          echo COMPILER=kotlinc-jvm 1.8.10
           echo NOTES=Includes vcrtuntime140.dll, AOT compiled with GraalVM, same version as the Java benchmark
           )>info.txt
           # By default the generated binary will depend on VCRuntime140.dll that is
@@ -334,7 +337,7 @@ jobs:
           nim --version
           (
           echo LANGUAGE=Nim
-          echo COMPILER=Nim Compiler Version 1.6.12 [Windows: amd64]
+          echo COMPILER=Nim Compiler Version 1.6.14 [Windows: amd64]
           )>info.txt
       - name: Upload
         uses: actions/upload-artifact@v3
@@ -358,7 +361,7 @@ jobs:
         rustc --version
         (
         echo LANGUAGE=Rust
-        echo COMPILER=rustc 1.69.0 ^(84c898d65 2023-04-16^)
+        echo COMPILER=rustc 1.71.0 ^(8ede3aae2 2023-07-12^)
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -400,8 +403,8 @@ jobs:
     - name: Install Swift
       shell: cmd
       run: |
-        curl -L -O https://download.swift.org/swift-5.8-release/windows10/swift-5.8-RELEASE/swift-5.8-RELEASE-windows10.exe
-        start /wait swift-5.8-RELEASE-windows10.exe /quiet
+        curl -L -O https://download.swift.org/swift-5.8.1-release/windows10/swift-5.8.1-RELEASE/swift-5.8.1-RELEASE-windows10.exe
+        start /wait swift-5.8.1-RELEASE-windows10.exe /quiet
     - name: Build
       shell: cmd
       run: |
@@ -417,7 +420,7 @@ jobs:
         swiftc -version
         (
         echo LANGUAGE=Swift
-        echo COMPILER=compnerd.org Swift version 5.8 ^(swift-5.8-RELEASE^)
+        echo COMPILER=compnerd.org Swift version 5.8.1 ^(swift-5.8.1-RELEASE^)
         echo NOTES=Includes: swiftCore.dll, vcruntime140.dll, vcruntime140_1.dll, msvcp140.dll
         )>info.txt
     - name: Upload
@@ -445,7 +448,7 @@ jobs:
         zig version
         (
         echo LANGUAGE=Zig
-        echo COMPILER=0.11.0-dev.3222+7077e90b3
+        echo COMPILER=0.11.0-dev.4191+1bf16b172
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
