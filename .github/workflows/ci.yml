@@ -177,6 +177,32 @@ jobs:
           dart/hello.exe
           dart/info.txt
 
+  build_fasm:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: stevenwdv/setup-fasm@v1
+      with:
+        edition: fasm1
+        version: 1.73.31
+        download-unknown: secure
+    - name: Build
+      shell: cmd
+      run: |
+        cd fasm
+        fasm hello.asm
+        (
+        echo LANGUAGE=Assembly
+        echo COMPILER=flat assembler  version 1.73.31
+        )>info.txt
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: fasm
+        path: |
+          fasm/hello.exe
+          fasm/info.txt
+
   build_fsharp:
     runs-on: windows-latest
     steps:
@@ -459,7 +485,7 @@ jobs:
           zig/info.txt
 
   summarize:
-    needs: [build_asm, build_c, build_cpp, build_crystal, build_csharp, build_d, build_dart, build_fsharp, build_go, build_haskell, build_java, build_kotlin, build_nim, build_rust, build_scala, build_swift, build_zig]
+    needs: [build_asm, build_c, build_cpp, build_crystal, build_csharp, build_d, build_dart, build_fasm, build_fsharp, build_go, build_haskell, build_java, build_kotlin, build_nim, build_rust, build_scala, build_swift, build_zig]
     runs-on: windows-latest
     steps:
       - name: Download all artifacts
