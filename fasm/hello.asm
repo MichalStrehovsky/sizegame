@@ -1,6 +1,6 @@
 format PE64 CONSOLE
 
-include 'win64wxp.inc'
+include 'include/win64axp.inc'
 
 .code
 
@@ -9,7 +9,7 @@ include 'win64wxp.inc'
 
   start:
         fastcall [GetStdHandle],STD_OUTPUT_HANDLE
-        fastcall [WriteConsole],rax,addr text,text_length,0,0
+        fastcall [WriteFile],rax,addr text,text_length,0,0
         xor      rax,rax
         ret
 
