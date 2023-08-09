@@ -435,6 +435,33 @@ jobs:
           swift/swiftCore.dll
           swift/info.txt
 
+  build_v:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install V
+      uses: vlang/setup-v@v1
+      with:
+        check-latest: true
+    - name: Build
+      shell: pwsh
+      run: |
+        cd v
+        v ./hello.v
+        v --version
+        $info = @(
+          "LANGUAGE=V"
+          "COMPILER=$(v --version)"
+        )
+        $info | Out-File -FilePath info.txt -Encoding ascii
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: v
+        path: |
+          v/hello.exe
+          v/info.txt
+
   build_zig:
     runs-on: windows-latest
     steps:
@@ -459,7 +486,7 @@ jobs:
           zig/info.txt
 
   summarize:
-    needs: [build_asm, build_c, build_cpp, build_crystal, build_csharp, build_d, build_dart, build_fsharp, build_go, build_haskell, build_java, build_kotlin, build_nim, build_rust, build_scala, build_swift, build_zig]
+    needs: [build_asm, build_c, build_cpp, build_crystal, build_csharp, build_d, build_dart, build_fsharp, build_go, build_haskell, build_java, build_kotlin, build_nim, build_rust, build_scala, build_swift, build_v, build_zig]
     runs-on: windows-latest
     steps:
       - name: Download all artifacts
