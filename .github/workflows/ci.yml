@@ -447,7 +447,7 @@ jobs:
       shell: pwsh
       run: |
         cd v
-        v ./hello.v
+        v -prod ./hello.v
         v --version
         $info = @(
           "LANGUAGE=V"
