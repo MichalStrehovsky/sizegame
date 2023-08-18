@@ -177,6 +177,33 @@ jobs:
           dart/hello.exe
           dart/info.txt
 
+  build_fortran:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: awvwgk/setup-fortran@v1
+        with:
+          compiler: intel
+          version: '2023.2'
+      - name: Build
+        shell: pwsh
+        run: |
+          cd fortran
+          gfortran -o hello.exe hello.f90
+          gfortran --version
+          $info = @(
+            "LANGUAGE=Fortran"
+            "COMPILER=fortran 2023.2"
+          )
+          $info | Out-File -FilePath info.txt -Encoding ascii
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: v
+          path: |
+            fortran/hello.exe
+            fortran/info.txt
+
   build_fsharp:
     runs-on: windows-latest
     steps:
