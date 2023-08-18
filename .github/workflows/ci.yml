@@ -54,6 +54,31 @@ jobs:
           c/hello.exe
           c/info.txt
 
+  build_cobol:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install GnuCOBOL Compiler
+        run: choco install gnucobol
+      - name: Build
+        shell: pwsh
+        run: |
+          cd cobol
+          cobc -x -o hello.exe hello.cbl
+          cobc --version
+          $info = @(
+            "LANGUAGE=Cobol"
+            "COMPILER=3.2.0"
+          )
+          $info | Out-File -FilePath info.txt -Encoding ascii
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: v
+          path: |
+            cobol/hello.exe
+            cobol/info.txt
+
   build_cpp:
     runs-on: windows-latest
     steps:
