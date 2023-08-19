@@ -64,6 +64,7 @@ jobs:
         shell: pwsh
         run: |
           cd cobol
+          cobenv
           cobc -x -o hello.exe hello.cbl
           cobc --version
           $info = @(
@@ -511,7 +512,7 @@ jobs:
           zig/info.txt
 
   summarize:
-    needs: [build_asm, build_c, build_cpp, build_crystal, build_csharp, build_d, build_dart, build_fsharp, build_go, build_haskell, build_java, build_kotlin, build_nim, build_rust, build_scala, build_swift, build_v, build_zig]
+    needs: [build_asm, build_c, build_cobol, build_cpp, build_crystal, build_csharp, build_d, build_dart, build_fsharp, build_go, build_haskell, build_java, build_kotlin, build_nim, build_rust, build_scala, build_swift, build_v, build_zig]
     runs-on: windows-latest
     steps:
       - name: Download all artifacts
