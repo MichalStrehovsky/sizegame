@@ -64,7 +64,7 @@ jobs:
         shell: pwsh
         run: |
           cd cobol
-          refreshenv
+          Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
           cobc -x -o hello.exe hello.cbl
           cobc --version
           $info = @(
@@ -75,7 +75,7 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          name: v
+          name: cobol
           path: |
             cobol/hello.exe
             cobol/info.txt
