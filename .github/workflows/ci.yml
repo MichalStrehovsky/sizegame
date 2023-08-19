@@ -64,7 +64,7 @@ jobs:
         shell: pwsh
         run: |
           cd cobol
-          cobenv
+          refreshenv
           cobc -x -o hello.exe hello.cbl
           cobc --version
           $info = @(
