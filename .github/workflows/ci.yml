@@ -181,10 +181,10 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: awvwgk/setup-fortran@v1
+      - uses: awvwgk/setup-fortran@5f9d8c3596acd2823e8d39500314a8f0e5568033
         with:
           compiler: intel
-          version: '2023.2'
+          version: '2023.2.0'
       - name: Build
         shell: pwsh
         run: |
@@ -193,7 +193,7 @@ jobs:
           gfortran --version
           $info = @(
             "LANGUAGE=Fortran"
-            "COMPILER=fortran 2023.2"
+            "COMPILER=fortran 2023.2.0"
           )
           $info | Out-File -FilePath info.txt -Encoding ascii
       - name: Upload
@@ -513,7 +513,7 @@ jobs:
           zig/info.txt
 
   summarize:
-    needs: [build_asm, build_c, build_cpp, build_crystal, build_csharp, build_d, build_dart, build_fsharp, build_go, build_haskell, build_java, build_kotlin, build_nim, build_rust, build_scala, build_swift, build_v, build_zig]
+    needs: [build_asm, build_c, build_cpp, build_crystal, build_csharp, build_d, build_dart, build_fortran, build_fsharp, build_go, build_haskell, build_java, build_kotlin, build_nim, build_rust, build_scala, build_swift, build_v, build_zig]
     runs-on: windows-latest
     steps:
       - name: Download all artifacts
