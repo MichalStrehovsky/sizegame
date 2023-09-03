@@ -199,7 +199,7 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          name: v
+          name: fortran
           path: |
             fortran/hello.exe
             fortran/info.txt
