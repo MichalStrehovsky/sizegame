@@ -213,11 +213,11 @@ jobs:
       shell: cmd
       run: |
         cd go
-        go build hello.go
+        go build -ldflags "-w" hello.go
         go version
         (
         echo LANGUAGE=Go
-        echo COMPILER=go version go1.20.6 windows/amd64
+        echo COMPILER=go version go1.21.1 windows/amd64
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
