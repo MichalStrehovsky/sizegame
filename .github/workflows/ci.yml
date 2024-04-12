@@ -412,6 +412,7 @@ jobs:
         cd swift
         # Attempt to do a static executable. As of Swift 5.7.3, this doesn't seem to actually work.
         swiftc -Osize -static-executable hello.swift
+        where swiftCore.dll
         # for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
         copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.38.33135\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
         copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.38.33135\x64\Microsoft.VC143.CRT\vcruntime140_1.dll" .
