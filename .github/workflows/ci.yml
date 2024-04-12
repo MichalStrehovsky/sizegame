@@ -267,15 +267,14 @@ jobs:
         cd java
         javac Hello.java
         # By default the generated binary will depend on VCRuntime140.dll that is
-        # not part of a clean OS install. Pass --static to show I tried,
-        # but it doesn't seem to work.
-        call native-image --static Hello
+        # not part of a clean OS install. Passing --static is not allowed.
+        call native-image Hello
         # for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
         copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.38.33135\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
         call native-image --version
         (
         echo LANGUAGE=Java
-        echo COMPILER=native-image 17.0.8 2023-07-18
+        echo COMPILER=Oracle GraalVM 22+36.1
         echo NOTES=Includes vcruntime140.dll
         )>info.txt
     - name: Upload
@@ -310,9 +309,8 @@ jobs:
           echo NOTES=Includes vcrtuntime140.dll, AOT compiled with GraalVM, same version as the Java benchmark
           )>info.txt
           # By default the generated binary will depend on VCRuntime140.dll that is
-          # not part of a clean OS install. Pass --static to show I tried,
-          # but it doesn't seem to work.
-          call native-image --static -jar hello.jar --no-fallback
+          # not part of a clean OS install. Passing --static is not allowed.
+          call native-image -jar hello.jar --no-fallback
           # for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
           copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.38.33135\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
       - name: Upload
