@@ -19,7 +19,7 @@ jobs:
         ml64 hello.asm /link /entry:main kernel32.lib
         (
         echo LANGUAGE=Assembly
-        echo COMPILER=Microsoft Macro Assembler Version 14.35.32217.1
+        echo COMPILER=Microsoft Macro Assembler Version 14.38.33135.0
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -44,7 +44,7 @@ jobs:
         cl /MT /Os hello.c
         (
         echo LANGUAGE=C
-        echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.35.32217.1 for x64
+        echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.38.33135 for x64
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -70,7 +70,7 @@ jobs:
         cl /MT /Os /EHsc hello.cpp
         (
         echo LANGUAGE=C++
-        echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.35.32217.1 for x64
+        echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.38.33135 for x64
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -94,7 +94,7 @@ jobs:
         crystal build hello.cr --release
         (
         echo LANGUAGE=Crystal
-        echo COMPILER=Crystal 1.9.2 [1908c81] ^(2023-07-19^)
+        echo COMPILER=Crystal 1.12.1 [4cea101] ^(2024-04-11^)
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -110,7 +110,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0.100-rc.1.23455.8'
+        dotnet-version: '9.0.100-preview.3.24204.13'
     - name: Build
       shell: cmd
       run: |
@@ -119,15 +119,15 @@ jobs:
         dotnet publish /p:OptimizationPreference=Size
         (
         echo LANGUAGE=C#
-        echo COMPILER=8.0.100-rc.1.23455.8
-        )>bin\Release\net8.0\win-x64\publish\info.txt
+        echo COMPILER=9.0.100-preview.3.24204.13
+        )>bin\Release\net9.0\win-x64\publish\info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
       with:
         name: csharp
         path: |
-          csharp/bin/Release/net8.0/win-x64/publish/hello.exe
-          csharp/bin/Release/net8.0/win-x64/publish/info.txt
+          csharp/bin/Release/net9.0/win-x64/publish/hello.exe
+          csharp/bin/Release/net9.0/win-x64/publish/info.txt
 
   build_d:
     runs-on: windows-latest
@@ -144,7 +144,7 @@ jobs:
         dmd --version
         (
         echo LANGUAGE=D
-        echo COMPILER=DMD64 D Compiler v2.104.2-dirty
+        echo COMPILER=DMD64 D Compiler v2.108.0
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -167,7 +167,7 @@ jobs:
         dart --version
         (
         echo LANGUAGE=Dart
-        echo COMPILER=Dart SDK version: 3.0.6 ^(stable^) ^(Tue Jul 11 18:49:07 2023 +0000^) on "windows_x64"
+        echo COMPILER=Dart SDK version: 3.3.3 ^(stable^) ^(Tue Mar 26 14:21:33 2024 +0000^) on "windows_x64"
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -183,7 +183,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0.100-rc.1.23455.8'
+        dotnet-version: '9.0.100-preview.3.24204.13'
     - name: Build
       shell: cmd
       run: |
@@ -192,15 +192,15 @@ jobs:
         dotnet publish -p:PublishAot=true -p:OptimizationPreference=Size
         (
         echo LANGUAGE=F#
-        echo COMPILER=8.0.100-rc.1.23455.8
-        )>bin\Release\net8.0\win-x64\publish\info.txt
+        echo COMPILER=9.0.100-preview.3.24204.13
+        )>bin\Release\net9.0\win-x64\publish\info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
       with:
         name: fsharp
         path: |
-          fsharp/bin/Release/net8.0/win-x64/publish/hello.exe
-          fsharp/bin/Release/net8.0/win-x64/publish/info.txt
+          fsharp/bin/Release/net9.0/win-x64/publish/hello.exe
+          fsharp/bin/Release/net9.0/win-x64/publish/info.txt
 
   build_go:
     runs-on: windows-latest
@@ -217,7 +217,7 @@ jobs:
         go version
         (
         echo LANGUAGE=Go
-        echo COMPILER=go version go1.20.6 windows/amd64
+        echo COMPILER=go version go1.22.2 windows/amd64
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -258,7 +258,7 @@ jobs:
     - uses: graalvm/setup-graalvm@v1
       with:
         version: 'latest'
-        java-version: '17'
+        java-version: '22'
         components: 'native-image'
         github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Build
@@ -267,15 +267,14 @@ jobs:
         cd java
         javac Hello.java
         # By default the generated binary will depend on VCRuntime140.dll that is
-        # not part of a clean OS install. Pass --static to show I tried,
-        # but it doesn't seem to work.
-        call native-image --static Hello
+        # not part of a clean OS install. Passing --static is not allowed.
+        call native-image Hello
         # for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
-        copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.34.31931\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
+        copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.38.33135\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
         call native-image --version
         (
         echo LANGUAGE=Java
-        echo COMPILER=native-image 17.0.8 2023-07-18
+        echo COMPILER=Oracle GraalVM 22+36.1
         echo NOTES=Includes vcruntime140.dll
         )>info.txt
     - name: Upload
@@ -295,7 +294,7 @@ jobs:
       - uses: graalvm/setup-graalvm@v1
         with:
           version: 'latest'
-          java-version: '17'
+          java-version: '22'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build
@@ -310,11 +309,10 @@ jobs:
           echo NOTES=Includes vcrtuntime140.dll, AOT compiled with GraalVM, same version as the Java benchmark
           )>info.txt
           # By default the generated binary will depend on VCRuntime140.dll that is
-          # not part of a clean OS install. Pass --static to show I tried,
-          # but it doesn't seem to work.
-          call native-image --static -jar hello.jar --no-fallback
+          # not part of a clean OS install. Passing --static is not allowed.
+          call native-image -jar hello.jar --no-fallback
           # for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
-          copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.34.31931\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
+          copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.38.33135\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
@@ -337,7 +335,7 @@ jobs:
           nim --version
           (
           echo LANGUAGE=Nim
-          echo COMPILER=Nim Compiler Version 1.6.14 [Windows: amd64]
+          echo COMPILER=Nim Compiler Version 2.0.2 [Windows: amd64]
           )>info.txt
       - name: Upload
         uses: actions/upload-artifact@v3
@@ -361,7 +359,7 @@ jobs:
         rustc --version
         (
         echo LANGUAGE=Rust
-        echo COMPILER=rustc 1.71.0 ^(8ede3aae2 2023-07-12^)
+        echo COMPILER=rustc 1.77.1 ^(7cf61ebde 2024-03-27^)
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -403,8 +401,8 @@ jobs:
     - name: Install Swift
       shell: cmd
       run: |
-        curl -L -O https://download.swift.org/swift-5.8.1-release/windows10/swift-5.8.1-RELEASE/swift-5.8.1-RELEASE-windows10.exe
-        start /wait swift-5.8.1-RELEASE-windows10.exe /quiet
+        curl -L -O https://download.swift.org/swift-5.10-release/windows10/swift-5.10-RELEASE/swift-5.10-RELEASE-windows10.exe
+        start /wait swift-5.10-RELEASE-windows10.exe /quiet
     - name: Build
       shell: cmd
       run: |
@@ -413,14 +411,14 @@ jobs:
         # Attempt to do a static executable. As of Swift 5.7.3, this doesn't seem to actually work.
         swiftc -Osize -static-executable hello.swift
         # for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
-        copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.34.31931\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
-        copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.34.31931\x64\Microsoft.VC143.CRT\vcruntime140_1.dll" .
-        copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.34.31931\x64\Microsoft.VC143.CRT\msvcp140.dll" .
-        copy "%PROGRAMFILES%\swift\runtime-development\usr\bin\swiftCore.dll" .
+        copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.38.33135\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
+        copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.38.33135\x64\Microsoft.VC143.CRT\vcruntime140_1.dll" .
+        copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.38.33135\x64\Microsoft.VC143.CRT\msvcp140.dll" .
+        copy "%LOCALAPPDATA%\Programs\Swift\Runtimes\5.10.0\usr\bin\swiftCore.dll" .
         swiftc -version
         (
         echo LANGUAGE=Swift
-        echo COMPILER=compnerd.org Swift version 5.8.1 ^(swift-5.8.1-RELEASE^)
+        echo COMPILER=Swift version 5.10 ^(swift-5.10-RELEASE^)
         echo NOTES=Includes: swiftCore.dll, vcruntime140.dll, vcruntime140_1.dll, msvcp140.dll
         )>info.txt
     - name: Upload
@@ -475,7 +473,7 @@ jobs:
         zig version
         (
         echo LANGUAGE=Zig
-        echo COMPILER=0.11.0-dev.4191+1bf16b172
+        echo COMPILER=0.12.0-dev.3634+3d1652070
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
