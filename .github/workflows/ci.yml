@@ -119,7 +119,7 @@ jobs:
         dotnet publish /p:OptimizationPreference=Size
         (
         echo LANGUAGE=C#
-        echo COMPILER=9.0.100-preview.3.24204.13
+        echo COMPILER=9.0.100-preview.7.24407.12
         )>bin\Release\net9.0\win-x64\publish\info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -192,7 +192,7 @@ jobs:
         dotnet publish -p:PublishAot=true -p:OptimizationPreference=Size
         (
         echo LANGUAGE=F#
-        echo COMPILER=9.0.100-preview.3.24204.13
+        echo COMPILER=9.0.100-preview.7.24407.12
         )>bin\Release\net9.0\win-x64\publish\info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
