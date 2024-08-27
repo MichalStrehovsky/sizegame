@@ -110,7 +110,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '9.0.100-preview.3.24204.13'
+        dotnet-version: '9.0.100-preview.7.24407.12'
     - name: Build
       shell: cmd
       run: |
@@ -183,7 +183,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '9.0.100-preview.3.24204.13'
+        dotnet-version: '9.0.100-preview.7.24407.12'
     - name: Build
       shell: cmd
       run: |
@@ -401,8 +401,8 @@ jobs:
     - name: Install Swift
       shell: cmd
       run: |
-        curl -L -O https://download.swift.org/swift-5.10-release/windows10/swift-5.10-RELEASE/swift-5.10-RELEASE-windows10.exe
-        start /wait swift-5.10-RELEASE-windows10.exe /quiet
+        curl -L -O https://download.swift.org/swift-5.10.1-release/windows10/swift-5.10.1-RELEASE/swift-5.10.1-RELEASE-windows10.exe
+        start /wait swift-5.10.1-RELEASE-windows10.exe /quiet
     - name: Build
       shell: cmd
       run: |
@@ -418,7 +418,7 @@ jobs:
         swiftc -version
         (
         echo LANGUAGE=Swift
-        echo COMPILER=Swift version 5.10 ^(swift-5.10-RELEASE^)
+        echo COMPILER=Swift version 5.10.1 ^(swift-5.10.1-RELEASE^)
         echo NOTES=Includes: swiftCore.dll, vcruntime140.dll, vcruntime140_1.dll, msvcp140.dll
         )>info.txt
     - name: Upload
