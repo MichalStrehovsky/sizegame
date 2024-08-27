@@ -19,7 +19,7 @@ jobs:
         ml64 hello.asm /link /entry:main kernel32.lib
         (
         echo LANGUAGE=Assembly
-        echo COMPILER=Microsoft Macro Assembler Version 14.38.33135.0
+        echo COMPILER=Microsoft Macro Assembler Version 14.40.33807.0
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -270,7 +270,7 @@ jobs:
         rem not part of a clean OS install. Passing --static is not allowed.
         call native-image Hello
         rem for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
-        copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.38.33135\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
+        copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.40.33807\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
         call native-image --version
         (
         echo LANGUAGE=Java
@@ -311,8 +311,8 @@ jobs:
           rem By default the generated binary will depend on VCRuntime140.dll that is
           rem not part of a clean OS install. Passing --static is not allowed.
           call native-image -jar hello.jar --no-fallback
-          for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
-          copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.38.33135\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
+          rem for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
+          copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.40.33807\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
@@ -411,9 +411,9 @@ jobs:
         rem Attempt to do a static executable. As of Swift 5.7.3, this doesn't seem to actually work.
         swiftc -Osize -static-executable hello.swift
         rem for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
-        copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.38.33135\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
-        copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.38.33135\x64\Microsoft.VC143.CRT\vcruntime140_1.dll" .
-        copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.38.33135\x64\Microsoft.VC143.CRT\msvcp140.dll" .
+        copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.40.33807\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
+        copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.40.33807\x64\Microsoft.VC143.CRT\vcruntime140_1.dll" .
+        copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.40.33807\x64\Microsoft.VC143.CRT\msvcp140.dll" .
         copy "%LOCALAPPDATA%\Programs\Swift\Runtimes\5.10.1\usr\bin\swiftCore.dll" .
         swiftc -version
         (
