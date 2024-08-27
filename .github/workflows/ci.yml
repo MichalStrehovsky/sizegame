@@ -91,7 +91,7 @@ jobs:
       run: |
         cd crystal
         crystal -v
-        crystal build hello.cr --release
+        crystal build hello.cr --release --static
         (
         echo LANGUAGE=Crystal
         echo COMPILER=1.13.2 [879ec12]
