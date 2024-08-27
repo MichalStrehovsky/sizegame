@@ -54,6 +54,32 @@ jobs:
           c/hello.exe
           c/info.txt
 
+  build_cobol:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install GnuCOBOL Compiler
+        run: choco install gnucobol
+      - name: Build
+        shell: pwsh
+        run: |
+          cd cobol
+          Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
+          cobc -x -o hello.exe hello.cbl
+          cobc --version
+          $info = @(
+            "LANGUAGE=Cobol"
+            "COMPILER=3.2.0"
+          )
+          $info | Out-File -FilePath info.txt -Encoding ascii
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: cobol
+          path: |
+            cobol/hello.exe
+            cobol/info.txt
+
   build_cpp:
     runs-on: windows-latest
     steps:
@@ -484,7 +510,7 @@ jobs:
           zig/info.txt
 
   summarize:
-    needs: [build_asm, build_c, build_cpp, build_crystal, build_csharp, build_d, build_dart, build_fsharp, build_go, build_haskell, build_java, build_kotlin, build_nim, build_rust, build_scala, build_swift, build_v, build_zig]
+    needs: [build_asm, build_c, build_cobol, build_cpp, build_crystal, build_csharp, build_d, build_dart, build_fsharp, build_go, build_haskell, build_java, build_kotlin, build_nim, build_rust, build_scala, build_swift, build_v, build_zig]
     runs-on: windows-latest
     steps:
       - name: Download all artifacts
