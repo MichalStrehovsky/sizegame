@@ -38,8 +38,8 @@ jobs:
       run: |
         cd c
         call "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-        # By default the generated binary will depend on VCRuntime140.dll that is
-        # not part of a clean OS install. Pass /MT
+        rem By default the generated binary will depend on VCRuntime140.dll that is
+        rem not part of a clean OS install. Pass /MT
         cl
         cl /MT /Os hello.c
         (
@@ -63,9 +63,9 @@ jobs:
       run: |
         cd cpp
         call "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-        # By default the generated binary will depend on VCRuntime140.dll that is
-        # not part of a clean OS install. Pass /MT
-        # Generates a warning if /EHsc is not passed. So pass it.
+        rem By default the generated binary will depend on VCRuntime140.dll that is
+        rem not part of a clean OS install. Pass /MT
+        rem Generates a warning if /EHsc is not passed. So pass it.
         cl
         cl /MT /Os /EHsc hello.cpp
         (
@@ -266,10 +266,10 @@ jobs:
       run: |
         cd java
         javac Hello.java
-        # By default the generated binary will depend on VCRuntime140.dll that is
-        # not part of a clean OS install. Passing --static is not allowed.
+        rem By default the generated binary will depend on VCRuntime140.dll that is
+        rem not part of a clean OS install. Passing --static is not allowed.
         call native-image Hello
-        # for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
+        rem for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
         copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.38.33135\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
         call native-image --version
         (
@@ -308,10 +308,10 @@ jobs:
           echo COMPILER=kotlinc-jvm 1.8.10
           echo NOTES=Includes vcrtuntime140.dll, AOT compiled with GraalVM, same version as the Java benchmark
           )>info.txt
-          # By default the generated binary will depend on VCRuntime140.dll that is
-          # not part of a clean OS install. Passing --static is not allowed.
+          rem By default the generated binary will depend on VCRuntime140.dll that is
+          rem not part of a clean OS install. Passing --static is not allowed.
           call native-image -jar hello.jar --no-fallback
-          # for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
+          for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
           copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.38.33135\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
       - name: Upload
         uses: actions/upload-artifact@v3
@@ -353,8 +353,8 @@ jobs:
       shell: cmd
       run: |
         cd rust
-        # By default the generated binary will depend on VCRuntime140.dll that is
-        # not part of a clean OS install. Pass +crt-static.
+        rem By default the generated binary will depend on VCRuntime140.dll that is
+        rem not part of a clean OS install. Pass +crt-static.
         rustc -C opt-level=2 -C target-feature=+crt-static hello.rs
         rustc --version
         (
@@ -408,13 +408,13 @@ jobs:
       run: |
         call refreshenv
         cd swift
-        # Attempt to do a static executable. As of Swift 5.7.3, this doesn't seem to actually work.
+        rem Attempt to do a static executable. As of Swift 5.7.3, this doesn't seem to actually work.
         swiftc -Osize -static-executable hello.swift
-        # for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
+        rem for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
         copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.38.33135\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
         copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.38.33135\x64\Microsoft.VC143.CRT\vcruntime140_1.dll" .
         copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.38.33135\x64\Microsoft.VC143.CRT\msvcp140.dll" .
-        copy "%LOCALAPPDATA%\Programs\Swift\Runtimes\5.10.0\usr\bin\swiftCore.dll" .
+        copy "%LOCALAPPDATA%\Programs\Swift\Runtimes\5.10.1\usr\bin\swiftCore.dll" .
         swiftc -version
         (
         echo LANGUAGE=Swift
