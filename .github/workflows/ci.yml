@@ -19,7 +19,7 @@ jobs:
         ml64 hello.asm /link /entry:main kernel32.lib
         (
         echo LANGUAGE=Assembly
-        echo COMPILER=Microsoft Macro Assembler Version 14.40.33807.0
+        echo COMPILER=Microsoft Macro Assembler Version 14.40.33813.0
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -44,7 +44,7 @@ jobs:
         cl /MT /Os hello.c
         (
         echo LANGUAGE=C
-        echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.38.33135 for x64
+        echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.40.33813 for x64
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -70,7 +70,7 @@ jobs:
         cl /MT /Os /EHsc hello.cpp
         (
         echo LANGUAGE=C++
-        echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.38.33135 for x64
+        echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.40.33813 for x64
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -94,7 +94,7 @@ jobs:
         crystal build hello.cr --release
         (
         echo LANGUAGE=Crystal
-        echo COMPILER=Crystal 1.12.1 [4cea101] ^(2024-04-11^)
+        echo COMPILER=1.13.2 [879ec12]
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -144,7 +144,7 @@ jobs:
         dmd --version
         (
         echo LANGUAGE=D
-        echo COMPILER=DMD64 D Compiler v2.108.0
+        echo COMPILER=DMD64 D Compiler v2.109.1
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -167,7 +167,7 @@ jobs:
         dart --version
         (
         echo LANGUAGE=Dart
-        echo COMPILER=Dart SDK version: 3.3.3 ^(stable^) ^(Tue Mar 26 14:21:33 2024 +0000^) on "windows_x64"
+        echo COMPILER=Dart SDK version: 3.5.1 ^(stable^) ^(Tue Aug 13 21:02:17 2024 +0000^) on "windows_x64"
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -217,7 +217,7 @@ jobs:
         go version
         (
         echo LANGUAGE=Go
-        echo COMPILER=go version go1.22.2 windows/amd64
+        echo COMPILER=go version go1.23.0 windows/amd64
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -274,7 +274,7 @@ jobs:
         call native-image --version
         (
         echo LANGUAGE=Java
-        echo COMPILER=Oracle GraalVM 22+36.1
+        echo COMPILER=Oracle GraalVM 22.0.2+9.1
         echo NOTES=Includes vcruntime140.dll
         )>info.txt
     - name: Upload
@@ -335,7 +335,7 @@ jobs:
           nim --version
           (
           echo LANGUAGE=Nim
-          echo COMPILER=Nim Compiler Version 2.0.2 [Windows: amd64]
+          echo COMPILER=Nim Compiler Version 2.0.8 [Windows: amd64]
           )>info.txt
       - name: Upload
         uses: actions/upload-artifact@v3
@@ -359,7 +359,7 @@ jobs:
         rustc --version
         (
         echo LANGUAGE=Rust
-        echo COMPILER=rustc 1.77.1 ^(7cf61ebde 2024-03-27^)
+        echo COMPILER=1.80.1 ^(3f5fd8dd4 2024-08-06^)
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
@@ -473,7 +473,7 @@ jobs:
         zig version
         (
         echo LANGUAGE=Zig
-        echo COMPILER=0.12.0-dev.3634+3d1652070
+        echo COMPILER=0.14.0-dev.1307+849c31a6c
         )>info.txt
     - name: Upload
       uses: actions/upload-artifact@v3
