@@ -22,7 +22,7 @@ jobs:
         echo COMPILER=Microsoft Macro Assembler Version 14.40.33813.0
         )>info.txt
     - name: Upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: asm
         path: |
@@ -47,7 +47,7 @@ jobs:
         echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.40.33813 for x64
         )>info.txt
     - name: Upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: c
         path: |
@@ -73,7 +73,7 @@ jobs:
         echo COMPILER=Microsoft C/C++ Optimizing Compiler Version 19.40.33813 for x64
         )>info.txt
     - name: Upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: cpp
         path: |
@@ -97,7 +97,7 @@ jobs:
         echo COMPILER=1.13.2 [879ec12]
         )>info.txt
     - name: Upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: crystal
         path: |
@@ -122,7 +122,7 @@ jobs:
         echo COMPILER=9.0.100-preview.7.24407.12
         )>bin\Release\net9.0\win-x64\publish\info.txt
     - name: Upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: csharp
         path: |
@@ -147,7 +147,7 @@ jobs:
         echo COMPILER=DMD64 D Compiler v2.109.1
         )>info.txt
     - name: Upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: d
         path: |
@@ -170,7 +170,7 @@ jobs:
         echo COMPILER=Dart SDK version: 3.5.1 ^(stable^) ^(Tue Aug 13 21:02:17 2024 +0000^) on "windows_x64"
         )>info.txt
     - name: Upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: dart
         path: |
@@ -195,7 +195,7 @@ jobs:
         echo COMPILER=9.0.100-preview.7.24407.12
         )>bin\Release\net9.0\win-x64\publish\info.txt
     - name: Upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: fsharp
         path: |
@@ -220,7 +220,7 @@ jobs:
         echo COMPILER=go version go1.23.0 windows/amd64
         )>info.txt
     - name: Upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: go
         path: |
@@ -244,7 +244,7 @@ jobs:
           )
           $info | Out-File -FilePath info.txt -Encoding ascii
       - name: Upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: haskell
           path: |
@@ -278,7 +278,7 @@ jobs:
         echo NOTES=Includes vcruntime140.dll
         )>info.txt
     - name: Upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: java
         path: |
@@ -314,7 +314,7 @@ jobs:
           rem for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
           copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.40.33807\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
       - name: Upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: kotlin
           path: |
@@ -338,7 +338,7 @@ jobs:
           echo COMPILER=Nim Compiler Version 2.0.8 [Windows: amd64]
           )>info.txt
       - name: Upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: nim
           path: |
@@ -362,7 +362,7 @@ jobs:
         echo COMPILER=1.80.1 ^(3f5fd8dd4 2024-08-06^)
         )>info.txt
     - name: Upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: rust
         path: |
@@ -387,7 +387,7 @@ jobs:
           echo COMPILER=Scala 3.2.2 Scala-native 0.4.10
           )>target\scala-3.2.2\info.txt
       - name: Upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: scala
           path: |
@@ -422,7 +422,7 @@ jobs:
         echo NOTES=Includes: swiftCore.dll, vcruntime140.dll, vcruntime140_1.dll, msvcp140.dll
         )>info.txt
     - name: Upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: swift
         path: |
@@ -453,7 +453,7 @@ jobs:
         )
         $info | Out-File -FilePath info.txt -Encoding ascii
     - name: Upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: v
         path: |
@@ -476,7 +476,7 @@ jobs:
         echo COMPILER=0.14.0-dev.1307+849c31a6c
         )>info.txt
     - name: Upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: zig
         path: |
@@ -539,7 +539,7 @@ jobs:
           echo %LANGUAGE%	%size% >> plotdata.txt
           echo %LANGUAGE% ^| %size% ^| %COMPILER% ^| %NOTES% >> report.md
       - name: Upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: report
           path: |
