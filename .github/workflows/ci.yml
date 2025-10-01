@@ -290,36 +290,27 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: fwilhe2/setup-kotlin@main
-      - uses: graalvm/setup-graalvm@v1
-        with:
-          version: 'latest'
-          java-version: '22'
-          components: 'native-image'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup
+        shell: cmd
+        run: |
+          curl -LO https://github.com/JetBrains/kotlin/releases/download/v2.2.20/kotlin-native-prebuilt-windows-x86_64-2.2.20.zip
+          powershell -command "Expand-Archive kotlin-native-prebuilt-windows-x86_64-2.2.20.zip kotlin-bin"
       - name: Build
         shell: cmd
         run: |
+          set PATH=%CD%\kotlin-bin\bin;%PATH%
           cd kotlin
-          call kotlinc hello.kt -include-runtime -d hello.jar
-          call kotlinc -version
+          call kotlinc-native hello.kt -o hello
           (
           echo LANGUAGE=Kotlin
-          echo COMPILER=kotlinc-jvm 1.8.10
-          echo NOTES=Includes vcrtuntime140.dll, AOT compiled with GraalVM, same version as the Java benchmark
+          echo COMPILER=kotlinc-native 2.2.20
           )>info.txt
-          rem By default the generated binary will depend on VCRuntime140.dll that is
-          rem not part of a clean OS install. Passing --static is not allowed.
-          call native-image -jar hello.jar --no-fallback
-          rem for /r "%PROGRAMFILES%\Microsoft Visual Studio" %%a in (*) do if "%%~nxa"=="vcruntime140.dll" echo %%~dpnxa
-          copy "%PROGRAMFILES%\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.40.33807\x64\Microsoft.VC143.CRT\vcruntime140.dll" .
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: kotlin
           path: |
             kotlin/hello.exe
-            kotlin/vcruntime140.dll
             kotlin/info.txt
             
   build_nim:
