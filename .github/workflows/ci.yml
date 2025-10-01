@@ -298,7 +298,7 @@ jobs:
       - name: Build
         shell: cmd
         run: |
-          set PATH=%CD%\kotlin-bin\bin;%PATH%
+          set PATH=%CD%\kotlin-bin\kotlin-native-prebuilt-windows-x86_64-2.2.20\bin;%PATH%
           cd kotlin
           call kotlinc-native hello.kt -o hello
           (
